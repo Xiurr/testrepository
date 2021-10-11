@@ -38,7 +38,7 @@ public class TextFIle extends JFrame
     public PDDocument initfile;
     public static String readfile;
 
-
+dddddddddddddddddddddddddddd
     //Main function that sets the implementation of the page
     public static void main(String[] args)
     {
