@@ -151,7 +151,7 @@ public class TextFIle extends JFrame
         return newopen;
 
     }
-
+    12356
     //open a file which already been written
     public JMenuItem open()
     {
