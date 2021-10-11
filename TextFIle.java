@@ -165,10 +165,28 @@ public class TextFIle extends JFrame
                 return;
             }
             workArea.setText("");
-            workArea.setText(OPEN(dirPath,fileName));
+            workArea.setTex(OPEN(dirPath,fileName));
         });
         return open;
     }
+    hugbvgacbvb
+    public JMenuItem reopen()
+    {
+        JMenuItem open = new JMenuItem("Open(O)",KeyEvent.VK_O);
+        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+        open.addActionListener(arg0 -> {
+            openDia.setVisible(true);re
+            String dirPath = openDia.getDirectory();
+            String fileNreame = openDia.getFile();
+            if (dirPath == null || fileName == null) {
+                return;
+            }
+            workArea.setText("");
+            workArea.setText(OPEN(dirPath,fileName));
+        });
+        return reopen;
+    }
+
     //a function to help open
     public static String OPEN(String dirpath,String filename){
         File file0 = new File(dirpath,filename);
