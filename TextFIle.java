@@ -85,7 +85,7 @@ public class TextFIle extends JFrame
         time().start();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
+    dbsjabdjksa
     //Build the text editor's menu bar and add the desired function labels to it
     public JMenuBar createJMenuBar()
     {
