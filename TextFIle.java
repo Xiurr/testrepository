@@ -38,7 +38,7 @@ public class TextFIle extends JFrame
     public PDDocument initfile;
     public static String readfile;
 
-dddddddddddddddddddddddddddd
+
     //Main function that sets the implementation of the page
     public static void main(String[] args)
     {
@@ -85,7 +85,6 @@ dddddddddddddddddddddddddddd
         time().start();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    dbsjabdjksa
     //Build the text editor's menu bar and add the desired function labels to it
     public JMenuBar createJMenuBar()
     {
@@ -165,7 +164,7 @@ dddddddddddddddddddddddddddd
                 return;
             }
             workArea.setText("");
-            workArea.setTex(OPEN(dirPath,fileName));
+            workArea.setText(OPEN(dirPath,fileName));
         });
         return open;
     }
