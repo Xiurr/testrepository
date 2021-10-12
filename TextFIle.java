@@ -37,6 +37,9 @@ public class TextFIle extends JFrame
     public UndoManager um;
     public PDDocument initfile;
     public static String readfile;
+    LILILIILILILIL
+    LILILLILI
+            LLILILI
 
 
     //Main function that sets the implementation of the page
