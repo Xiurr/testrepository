@@ -1,11 +1,15 @@
 package org.example;
 
+dsaaaaaaaaaaaaaaaaaa
+import com.ibm.icu.text.Bidi;
+import com.ibm.icu.text.BidiRun;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.PDFTextStripper;
+import org.odftoolkit.odfdom.doc.OdfDocument;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 
 import javax.print.*;
@@ -23,13 +27,7 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-llllllllllll
-lllllllllllll
-llllllllll
-llllllllllll
-llllllllll
-llllllllllll
-llllllllllllllllllll
+
 public class TextFIle extends JFrame
 {
     public JFileChooser filechooser = new JFileChooser();
@@ -42,19 +40,18 @@ public class TextFIle extends JFrame
     public JPanel jPanelNorth = new JPanel();
     public UndoManager um;
     public PDDocument initfile;
-    public static String readfile;
+    public String readfile;
 
+    private Object OdfTextDocument;
 
-    //Main function that sets the implementation of the page
+    //主函数,设置页面的实现
     public static void main(String[] args)
     {
-
         setUIFont();
         TextFIle frame = new TextFIle();
-
         frame.setVisible(true);
     }
-    //Sets the global font for the text editor menu bar
+//设置文本编辑器菜单栏的全局字体
     public static void setUIFont()
     {
         Font f = new Font("楷体",Font.PLAIN,20);
@@ -70,28 +67,28 @@ public class TextFIle extends JFrame
             UIManager.put(item+ ".font",f);
         }
     }
-    //The main TextFIle that designs the text editor's window content
+//主要的TextFIle,设计文本编辑器的窗口内容
     public TextFIle()
     {
-        openDia = new FileDialog(this,"Open(O)",FileDialog.LOAD);
-        um = new UndoManager();
-        //Design the entire UI, including size, name, layout
         setTitle("Text Editor");
         setBounds(300,300,700,700);
         setJMenuBar(createJMenuBar());
         JScrollPane imgScrollPane = new JScrollPane(workArea);
         GridLayout gridLayout = new GridLayout(1, 2);
-        //Add components to the boundary layout
         jPanelNorth.setLayout(gridLayout);
         jPanelNorth.add(jLabelDate);
         jPanelNorth.add(jLabelTime);
+
+        openDia = new FileDialog(this,"Open(O)",FileDialog.LOAD);
+
+        um = new UndoManager();
         workArea.getDocument().addUndoableEditListener(um);
         add(jPanelNorth, BorderLayout.NORTH);
         add(imgScrollPane,BorderLayout.CENTER);
         time().start();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    //Build the text editor's menu bar and add the desired function labels to it
+
     public JMenuBar createJMenuBar()
     {
         JMenuBar menubar=new JMenuBar();
@@ -100,7 +97,6 @@ public class TextFIle extends JFrame
         JMenu menuEdit=new JMenu("Edit");
         JMenu menuAbout=new JMenu("Help");
 
-        //File functions
         menuFile.add(newopen());
         menuFile.add(open());
         menuFile.add(openJAVA());
@@ -115,7 +111,6 @@ public class TextFIle extends JFrame
         menuFile.add(print());
         menuFile.add(exit());
 
-        //Edit functions
         menuEdit.add(revocation());
         menuEdit.addSeparator();
         menuEdit.add(cut());
@@ -123,9 +118,9 @@ public class TextFIle extends JFrame
         menuEdit.add(paste());
         menuEdit.add(search());
 
-        //Help functions
+
         menuAbout.add(help());
-        //put them in the menubar
+
         menubar.add(menuFile);
         menubar.add(menuEdit);
         menubar.add(menuAbout);
@@ -133,7 +128,6 @@ public class TextFIle extends JFrame
         return menubar;
     }
 
-    //the function to display time on the top of the text-editor
     private Timer time()
     {
         return new Timer(1000, e -> {
@@ -145,9 +139,6 @@ public class TextFIle extends JFrame
         });
     }
 
-
-    //For the next is diff functions about File
-    //open a new page
     public JMenuItem newopen()
     {
         JMenuItem newopen = new JMenuItem("New(N)", KeyEvent.VK_N);
@@ -157,7 +148,6 @@ public class TextFIle extends JFrame
 
     }
 
-    //open a file which already been written
     public JMenuItem open()
     {
         JMenuItem open = new JMenuItem("Open(O)",KeyEvent.VK_O);
@@ -170,53 +160,13 @@ public class TextFIle extends JFrame
                 return;
             }
             workArea.setText("");
-            workArea.setText(OPEN(dirPath,fileName));
+            File fileO = new File(dirPath, fileName);
+            readfile = readFromFile(fileO);
+            workArea.setText(readfile);
         });
         return open;
     }
-    hugbvgacbvb
-    public JMenuItem reopen()
-    {
-        JMenuItem open = new JMenuItem("Open(O)",KeyEvent.VK_O);
-        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
-        open.addActionListener(arg0 -> {
-            openDia.setVisible(true);re
-            String dirPath = openDia.getDirectory();
-            String fileNreame = openDia.getFile();
-            if (dirPath == null || fileName == null) {
-                return;
-            }
-            workArea.setText("");
-            workArea.setText(OPEN(dirPath,fileName));
-        });
-        return reopen;
-    }
 
-    //a function to help open
-    public static String OPEN(String dirpath,String filename){
-        File file0 = new File(dirpath,filename);
-        char[] lines = new char[(int) file0.length()];
-        try {
-            FileReader fin=new FileReader(file0);
-            try {
-                fin.read(lines);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                fin.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return new String(lines);
-    }
-
-    //open file who end with .py and show the highlight of the keywords
     private JMenuItem openPYTHON()
     {
         JMenuItem openPYTHON = new JMenuItem("OpenPYTHON(Y)",KeyEvent.VK_Y);
@@ -234,7 +184,6 @@ public class TextFIle extends JFrame
 
             String finalfile1 = finalfile.replace("\n", "");
             char[] arr = finalfile1.toCharArray();
-            //this is the keyword's database
             String[] PkeywordsRED = {"from","for","finally","except","else","elif","del","def","continue","class","break","and","as","assert"};
             String[] PkeywordsORANGE = {"with","while","try","raise","return","print","pass","or","not","lambda","global","if","import","is","in"};
             String[] PkeywordsPURPLE = {"format","list","float","type","range","len","bool","tuple","file","input","open","all","int","str","sum","super","print"};
@@ -249,7 +198,8 @@ public class TextFIle extends JFrame
             SimpleAttributeSet set2 = new SimpleAttributeSet();
             StyleConstants.setForeground(set2, new Color(177, 80, 176));
 
-            //Realizing keyword discoloration, diff database have diff colors
+
+
             for (String item:PkeywordsRED) {
                 int k;
                 int l;
@@ -318,7 +268,6 @@ public class TextFIle extends JFrame
     }
 
 
-    //open file who end with .java and show the highlight of the keywords
     private JMenuItem openJAVA()
     {
         JMenuItem openJAVA = new JMenuItem("OpenJAVA(J)",KeyEvent.VK_J);
@@ -350,7 +299,7 @@ public class TextFIle extends JFrame
             StyleConstants.setForeground(set2, new Color(177, 80, 176));
             workArea.setCaretPosition(workArea.getDocument().getLength());
 
-            //Realizing keyword discoloration, diff database have diff colors
+
             for (String item:JkeywordsRED) {
                 int k;
                 int l;
@@ -418,7 +367,6 @@ public class TextFIle extends JFrame
     }
 
 
-    //open file who end with .cpp and show the highlight of the keywords
     private JMenuItem openCPP()
     {
         JMenuItem openCPP = new JMenuItem("OpenCPP(B)",KeyEvent.VK_B);
@@ -450,7 +398,8 @@ public class TextFIle extends JFrame
             SimpleAttributeSet set2 = new SimpleAttributeSet();
             StyleConstants.setForeground(set2, new Color(177, 80, 176));
 
-            //Realizing keyword discoloration, diff database have diff colors
+
+
             for (String item:PkeywordsRED) {
                 int k;
                 int l;
@@ -518,7 +467,6 @@ public class TextFIle extends JFrame
         return openCPP;
     }
 
-    //open file belong RTF
     private JMenuItem openRTF()
     {
         JMenuItem openRTF = new JMenuItem("OpenRTF(D)",KeyEvent.VK_R);
@@ -548,7 +496,6 @@ public class TextFIle extends JFrame
         return openRTF;
     }
 
-    //open file belong PDF
     private JMenuItem openPDF()
     {
         JMenuItem openPDF = new JMenuItem("OpenPDF(M)",KeyEvent.VK_M);
@@ -575,9 +522,6 @@ public class TextFIle extends JFrame
         return openPDF;
     }
 
-    //here is save function
-
-    //save .txt files
     private JMenuItem save()
     {
         JMenuItem save = new JMenuItem("Save(S)", KeyEvent.VK_S);
@@ -589,7 +533,8 @@ public class TextFIle extends JFrame
                 File f=filechooser.getSelectedFile();
                 try
                 {
-                    SAVE(f,workArea.getText());
+                    FileOutputStream out=new FileOutputStream(f);
+                    out.write(workArea.getText().getBytes());
                 }
                 catch(Exception ex)
                 {
@@ -600,23 +545,6 @@ public class TextFIle extends JFrame
         return save;
     }
 
-    //a function to help save
-    public static void SAVE(File f,String Text){
-        FileOutputStream out= null;
-        try {
-            out = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            assert out != null;
-            out.write(Text.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //save PDF file
     private JMenuItem savePDF()
     {
 
@@ -653,7 +581,6 @@ public class TextFIle extends JFrame
         return savePDF;
     }
 
-    //svae ODT files
     private JMenuItem saveODT()
     {
 
@@ -678,8 +605,6 @@ public class TextFIle extends JFrame
         return saveODT;
     }
 
-
-    //here is function about print files
     private JMenuItem print()
     {
         JMenuItem print = new JMenuItem("Print(P)", KeyEvent.VK_P);
@@ -706,7 +631,6 @@ public class TextFIle extends JFrame
         return print;
     }
 
-    //exit from the text-editor
     private JMenuItem exit()
     {
         JMenuItem exit = new JMenuItem("Exit(E)", KeyEvent.VK_E);
@@ -715,9 +639,6 @@ public class TextFIle extends JFrame
         return exit;
     }
 
-    //here is function about edit
-
-    //revocation operation you did
     private JMenuItem revocation()
     {
         workArea.getDocument().addUndoableEditListener(um);
@@ -731,7 +652,6 @@ public class TextFIle extends JFrame
         return revocation;
     }
 
-    //cut text from the whole one
     private JMenuItem cut()
     {
         JMenuItem cut=new JMenuItem("Cut(T)", KeyEvent.VK_T);
@@ -740,7 +660,6 @@ public class TextFIle extends JFrame
         return cut;
     }
 
-    //copy, have another same one
     private JMenuItem copy()
     {
         JMenuItem copy = new JMenuItem("Copy(C)", KeyEvent.VK_C);
@@ -749,7 +668,6 @@ public class TextFIle extends JFrame
         return copy;
     }
 
-    //put something you already copied
     private JMenuItem paste()
     {
         JMenuItem paste = new JMenuItem("Paste(V)", KeyEvent.VK_V);
@@ -758,7 +676,6 @@ public class TextFIle extends JFrame
         return paste;
     }
 
-    //to find words which you want to notice
     private JMenuItem search()
     {
         JMenuItem search = new JMenuItem("Search(F)", KeyEvent.VK_F);
@@ -767,7 +684,6 @@ public class TextFIle extends JFrame
         return search;
     }
 
-    //here is function about help,it's just have names and StudentID who did the text-editor
     private JMenuItem help()
     {
         JMenuItem help = new JMenuItem("Help(H)", KeyEvent.VK_H);
@@ -777,17 +693,10 @@ public class TextFIle extends JFrame
         return help;
     }
 
-    //a funtion to help fing
-    public static int index(String str1,String str2) {
-        JTextPane textPane1 = new JTextPane();
-        textPane1.setText(str1);
-        int index;
-        textPane1.setCaretPosition(textPane1.getText().length());
-        index = str1.lastIndexOf(str2, textPane1.getCaretPosition() - str2.length() - 1);
-        return index;
-    }
 
-    //realize the search function and display the find interface
+
+
+
     private void Find()
     {
     final JDialog findDialog=new JDialog(this,"Find",false);
@@ -813,7 +722,8 @@ public class TextFIle extends JFrame
 
         if(upButton.isSelected())
         {
-            k = index(str1,str2);
+            k=str1.lastIndexOf(str2, workArea.getCaretPosition()-findText.getText().length()-1);
+            System.out.println(k);
             if(k>-1)
             {
                 workArea.setCaretPosition(k);
@@ -868,7 +778,6 @@ public class TextFIle extends JFrame
     findDialog.setVisible(true);
 }
 
-//to help realize keywords highlight
     private boolean Word(char[] a, int b,String item)
     {
         char c=a[b+1];
@@ -883,7 +792,7 @@ public class TextFIle extends JFrame
         }
     }
 
-//help open function
+
     public String readFromFile(File file)
     {
         char[] lines =null;
